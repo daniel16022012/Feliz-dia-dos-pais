@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Feliz Dia dos Pais</title>
+  <style>
+    :root{ --card:#ffffff; --accent:#c56b2c; --text:#2b2b2b }
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
+    body{
+      background:url('familia.jpg') center/cover no-repeat fixed;
+      display:flex;align-items:center;justify-content:center;padding:24px
+    }
+
+    .stage{position:relative;width:920px;max-width:96vw;min-height:520px;background:rgba(255,255,255,0.9);border-radius:18px;box-shadow:0 18px 40px rgba(0,0,0,0.12);overflow:hidden;padding:36px;display:flex;align-items:center;justify-content:center}
+
+    h1{margin:0 0 6px 0;font-size:28px;color:var(--accent)}
+    p.lead{margin:0;color:var(--text);opacity:0.9}
+
+    .overlay{position:absolute;inset:0;background:rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(2px);}
+    .card-wrap{width:700px;max-width:92%;height:500px;perspective:1400px}
+
+    .envelope{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 900ms cubic-bezier(.2,.9,.2,1)}
+    .envelope .back{position:absolute;inset:0;border-radius:8px;background:#e9d7c8;box-shadow:0 8px 20px rgba(0,0,0,0.12);overflow:hidden}
+
+    .envelope .flap{position:absolute;left:0;right:0;top:0;height:52%;background:linear-gradient(180deg,#caa892,#e9d7c8);transform-origin:top center;border-bottom:2px solid rgba(0,0,0,0.04);display:flex;align-items:flex-start;justify-content:center;padding-top:40px}
+    .stamp{position:absolute;right:20px;top:20px;background:#fff;padding:8px 10px;border-radius:6px;font-size:13px;font-weight:700;box-shadow:0 6px 16px rgba(0,0,0,0.08)}
+
+    .letter{position:absolute;left:8%;right:8%;top:5%;bottom:5%;background:#fff;border-radius:6px;padding:20px 24px;box-shadow:0 6px 22px rgba(0,0,0,0.06);transform:translateY(8%) scale(0.98);opacity:0;transition:all 600ms ease;text-align:center}
+    .letter img{max-width:100%;border-radius:8px;margin-bottom:16px;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+
+    .envelope.open .flap{transform:rotateX(-180deg);transition:transform 900ms cubic-bezier(.15,.9,.15,1)}
+    .envelope.open .letter{transform:translateY(0) scale(1);opacity:1;transition-delay:420ms}
+
+    .controls{position:absolute;bottom:20px;right:24px;display:flex;gap:10px}
+    button{background:var(--accent);color:#fff;border:0;padding:10px 14px;border-radius:10px;font-weight:600;cursor:pointer;box-shadow:0 8px 18px rgba(197,107,44,0.18)}
+    button.ghost{background:transparent;color:var(--accent);border:2px solid rgba(197,107,44,0.14)}
+
+    .letter h2{margin:0 0 8px 0;font-size:22px;color:var(--accent)}
+    .letter p{color:var(--text);line-height:1.5;margin:8px 0}
+
+    @keyframes popIn{0%{transform:scale(.96);opacity:0}100%{transform:scale(1);opacity:1}}
+    .stage{animation:popIn 420ms ease both}
+
+    @media (max-width:520px){.card-wrap{height:420px}.letter{padding:14px}.stage{padding:18px}}
+  </style>
+</head>
+<body>
+  <div class="stage" role="main">
+    <div style="text-align:center;max-width:640px">
+      <h1>Feliz Dia dos Pais</h1>
+      <p class="lead">Uma surpresa especial — a carta vai abrir automaticamente. Clique no botão para ver novamente.</p>
+    </div>
+
+    <div class="overlay" id="overlay" aria-hidden="false">
+      <div class="card-wrap" role="dialog" aria-labelledby="tituloCarta" aria-modal="true">
+        <div class="envelope" id="envelope">
+
+          <div class="back">
+            <div class="flap"></div>
+            <div class="stamp">Para: Pai</div>
+          </div>
+
+          <div class="letter" id="letter">
+            <h2 id="tituloCarta">Para o melhor pai</h2>
+            <p>Querido pai,</p>
+            <p>Hoje é o dia de agradecer por todas as histórias, conselhos e abraços que nos tornaram quem somos. Sua força, carinho e exemplo são presentes que levarei para a vida inteira.</p>
+            <p>Obrigado por estar presente nos momentos bons e difíceis, por acreditar nos meus sonhos e por me ensinar a ser perseverante e gentil.</p>
+            <p>Com todo o amor,</p>
+            <p><strong>Daniel</strong></p>
+          </div>
+
+        </div>
+
+        <div class="controls" style="position:absolute;left:18px;bottom:18px">
+          <button id="closeBtn" class="ghost">Fechar</button>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="openBtn">Abrir carta</button>
+    </div>
+  </div>
+
+  <script>
+    const envelope = document.getElementById('envelope');
+    const overlay = document.getElementById('overlay');
+    const openBtn = document.getElementById('openBtn');
+    const closeBtn = document.getElementById('closeBtn');
+
+    window.addEventListener('load', ()=>{
+      setTimeout(()=> envelope.classList.add('open'), 380);
+    });
+
+    openBtn.addEventListener('click', ()=>{
+      envelope.classList.add('open');
+      overlay.setAttribute('aria-hidden','false');
+    });
+
+    closeBtn.addEventListener('click', ()=>{
+      envelope.classList.remove('open');
+      overlay.setAttribute('aria-hidden','true');
+    });
+
+    overlay.addEventListener('click', (e)=>{
+      if(e.target === overlay) envelope.classList.remove('open');
+    });
+  </script>
+</body>
+</html>
